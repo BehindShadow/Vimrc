@@ -108,7 +108,7 @@ set nocompatible " 不要使用vi的键盘模式，而是vim自己的
 
 " F5编译和运行C程序，C++程序，shell程序，F9 gdb调试
 " 请注意，下述代码在windows下使用会报错，需要去掉./这两个字符
-"C，C++ 按F5编译运行
+"C，C++ 按F5编译运行,注意在c/c++编译需要在同文件下新建input文件作为文件输入
 map <F5> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
 	exec "w"
@@ -129,9 +129,10 @@ func! CompileRunGcc()
 	endif
 endfunc
 
-"自动补全,注意这个回合设置paste冲突不知道为什么
+"自动补全,注意这个会和设置paste冲突不知道为什么
 inoremap ( ()<ESC>i
 inoremap ) <c-r>=ClosePair(')')<CR>
+"自动补全<符号，但是会有bug因为会导致你的代码变成这样：cout<<>>,于是禁用
 "inoremap < <><ESC>i
 "inoremap > <c-r>=ClosePair('>')<CR>
 inoremap { {<CR>}<ESC>O

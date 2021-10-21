@@ -21,12 +21,14 @@ All in all maybe you can see it by observing ".vimrc" flie
 - <space> + y (share clipboard)
 - <space> + p (share clipboard)
 - <C+n> :NREDTree:
-- <C+T> :NREDTreeToggle
+- <C+t> :NREDTreeToggle
 - and soon..
 
 ## usage
 
 You can use it samply.
+
+**This project need vim version 8.0 and above .**
 
 Use this command
 ```bash
@@ -44,8 +46,6 @@ then using the following command to Install the plug
 ```bash
 :PlugInstall
 ```
-
-
 
 
 
