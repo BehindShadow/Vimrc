@@ -50,7 +50,7 @@ then using the following command to Install the plug
 
 ## Screen Shot
 
-![图一](./img/2021-10-21.png)
+![图一](./img/2021-12-13_18-14.png)
 
 
 
