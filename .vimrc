@@ -1,12 +1,12 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'preservim/nerdtree'
-Plug 'rip-rip/clang_complete'
 Plug 'valloric/youcompleteme'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'kien/rainbow_parentheses.vim'
 
 " Initialize plugin system
 call plug#end()
@@ -18,6 +18,62 @@ autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind
+
+"设置youcompleteme语法补全
+"set runtimepath+=~/.vim/plugged/YouCompleteMe
+let g:ycm_global_ycm_extra_conf='~/.vim/plugged/youcompleteme/third_party/ycmd/.ycm_extra_conf.py' "加载文件路径
+"let g:clang_library_path='/usr/lib/llvm-10/lib/libclang.so'  "libclang路径
+
+" 寻找全局配置文件
+let g:ycm_global_ycm_extra_conf = '~/.vim/plugged/youcompleteme/third_party/ycmd/.ycm_extra_conf.py'
+" 禁用syntastic来对python检查
+let g:syntastic_ignore_files=[".*\.py$"] 
+" 使用ctags生成的tags文件
+let g:ycm_collect_identifiers_from_tag_files = 1
+" 开启语义补全
+" 修改对C语言的补全快捷键，默认是CTRL+space，修改为ALT+;未测出效果
+"let g:ycm_key_invoke_completion = '<M-;>'
+" 设置转到定义处的快捷键为ALT+G，未测出效果
+"nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR> 
+"关键字补全
+"let g:ycm_seed_identifiers_with_syntax = 1
+" 在接受补全后不分裂出一个窗口显示接受的项
+set completeopt-=preview
+" 让补全行为与一般的IDE一致
+set completeopt=longest,menu
+" 不显示开启vim时检查ycm_extra_conf文件的信息
+let g:ycm_confirm_extra_conf=0
+" 每次重新生成匹配项，禁止缓存匹配项
+let g:ycm_cache_omnifunc=0
+" 在注释中也可以补全
+let g:ycm_complete_in_comments=1
+" 输入第一个字符就开始补全
+let g:ycm_min_num_of_chars_for_completion=1
+" 错误标识符
+"let g:ycm_error_symbol='>>'
+" 警告标识符
+"let g:ycm_warning_symbol='>*'
+" 不查询ultisnips提供的代码模板补全，如果需要，设置成1即可
+" let g:ycm_use_ultisnips_completer=0
+
+let g:ycm_show_diagnostics_ui = 0                           " 禁用语法检查
+
+
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+
+let g:rbpt_colorpairs = [
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['gray',        'RoyalBlue3'], 
+    \ ['darkgreen',   'firebrick3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ]
+
+
 
 "设置编码方式，支持中文"
 "set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
@@ -44,6 +100,11 @@ set selectmode=mouse,key
 "显示括号匹配"
 set showmatch
 
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+
+hi CursorLine term=bold cterm=bold ctermbg=241
+
 " 语法高亮。自动识别代码，使用多种颜色表示
 syntax enable
 autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
@@ -59,20 +120,17 @@ set autoindent
 set cindent
 "set smartindent
 
-set scrolloff=5     " 光标移动到buffer的顶部和底部时保持5行距离  
+set scrolloff=6     " 光标移动到buffer的顶部和底部时保持5行距离  
 " 映射全选+复制 ctrl+a
 map <C-A> ggVG"+Y
 map! <C-A> <Esc>ggVG"+Y
 
+"自映射复制到+寄存器
 let mapleader=" "
 map <LEADER>p "+p
 map <LEADER>y "+y
 map <LEADER>yy "+yy
 
-"列出当前目录文件  
-map <F3> :tabnew .<CR>  
-"打开树状文件目录  
-map <C-F3> \be  
 
 "搜索忽略大小写
 set ignorecase
@@ -102,13 +160,13 @@ set completeopt=longest,menu
 
 "从不备份  
 set nobackup
-set nocompatible " 不要使用vi的键盘模式，而是vim自己的
+"不要使用vi的键盘模式，而是vim自己的
+set nocompatible 
 
  
-
 " F5编译和运行C程序，C++程序，shell程序，F9 gdb调试
 " 请注意，下述代码在windows下使用会报错，需要去掉./这两个字符
-"C，C++ 按F5编译运行,注意在c/c++编译需要在同文件下新建input文件作为文件输入
+"C，C++ 按F5编译运行
 map <F5> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
 	exec "w"
@@ -132,7 +190,6 @@ endfunc
 "自动补全,注意这个会和设置paste冲突不知道为什么
 inoremap ( ()<ESC>i
 inoremap ) <c-r>=ClosePair(')')<CR>
-"自动补全<符号，但是会有bug因为会导致你的代码变成这样：cout<<>>,于是禁用
 "inoremap < <><ESC>i
 "inoremap > <c-r>=ClosePair('>')<CR>
 inoremap { {<CR>}<ESC>O
@@ -149,9 +206,14 @@ function! ClosePair(char)
 	endif
 endfunction
 
-
+"更改光标样式
 let &t_SI.="\e[5 q" "SI = INSERT mode
 let &t_SR.="\e[4 q" "SR = REPLACE mode
 let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
+
+"括号匹配时的颜色修改
+hi MatchParen ctermbg=Red guibg=AliceBlue
+
+
 
 
