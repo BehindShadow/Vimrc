@@ -58,7 +58,7 @@ let g:ycm_min_num_of_chars_for_completion=1
 
 let g:ycm_show_diagnostics_ui = 0                           " 禁用语法检查
 
-
+" 加载rainbow插件
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
@@ -100,9 +100,11 @@ set selectmode=mouse,key
 "显示括号匹配"
 set showmatch
 
+"设置括号匹配样式
 let g:rbpt_max = 16
 let g:rbpt_loadcmd_toggle = 0
 
+"设置当前行(CursorLine)的外观样式
 hi CursorLine term=bold cterm=bold ctermbg=241
 
 " 语法高亮。自动识别代码，使用多种颜色表示

@@ -1,57 +1,20 @@
-# Vimrc
+# Linux Editor Configuration
 
-## Vim configuration
 
-- This is my first Vimrc.
-- It will be updated someday I have time.
+## Vim
 
-## Function
-
-- Most of this configuration is for c/c++
-- Some key settings have been changed
-- Use vim-plug as managment plugins
-
-## Keyboard mapping
-
-All in all maybe you can see it by observing ".vimrc" flie
-
-**brief introduction**
-
-- <F5>complie and run
-- <space> + y (share clipboard)
-- <space> + p (share clipboard)
-- <C+n> :NREDTree:
-- <C+t> :NREDTreeToggle
-- and soon..
-
-## usage
-
-You can use it samply.
-
-**This project need vim version 8.0 and above .**
-
-Use this command
-```bash
-git clone git@github.com:BehindShadow/Vimrc.git ~/
+Vim 文件夹下有两个文件
 
 ```
-
-then 
-```bash
-vim
-
+.vimrc
+.vimrc.orig
 ```
 
-then using the following command to Install the plug 
-```bash
-:PlugInstall
-```
+其中 .vimrc.orig 文件为原始配置，用于 C/C++ 编程
 
+.vimrc 文件为极小的，无插件的，即配即用的 vim 阅读器的配置，便捷无桌面端的服务器配置
 
-## Screen Shot
+将 .vimrc 复制到 ~/ 目录下即可
 
-![图一](./img/2021-12-13_18-14.png)
-
-
-
+## Tmux
 
